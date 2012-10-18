@@ -57,14 +57,14 @@ function domready(callback){
 		} else if ( document.addEventListener ) {
 
 			// Use the handy event callback
-			document.addEventListener( "DOMContentLoaded", DOMContentLoaded, false );
+			document.addEventListener( "DOMContentLoaded", self.DOMContentLoaded, false );
 
 			// A fallback to window.onload, that will always work
 			window.addEventListener( "load", self.ready, false );
 
 		} else {
 			// Ensure firing before onload, maybe late but safe also for iframes
-			document.attachEvent( "onreadystatechange", DOMContentLoaded );
+			document.attachEvent( "onreadystatechange", self.DOMContentLoaded );
 
 			// A fallback to window.onload, that will always work
 			window.attachEvent( "onload", self.ready );
@@ -73,7 +73,7 @@ function domready(callback){
 			// continually check to see if the document is ready
 			var top = false;
 			try {
-				top = window.frameElement == null && document.documentElement;
+				top = !window.frameElement && document.documentElement;
 			} catch(e) {}
 			if ( top && top.doScroll ) {
 				(function doScrollCheck() {
@@ -91,4 +91,10 @@ function domready(callback){
 				})();
 			}
 		}
-};	
+};
+
+
+if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define(domready);
+}
